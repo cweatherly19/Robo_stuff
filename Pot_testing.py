@@ -6,5 +6,5 @@ pot_pin = 8
 
 while True:
   pot_value = RPL.analogRead(pot_pin)
-  print pot_value
-  time.sleep(0.5)
+  print(pot_value)
+  time.sleep(0.05)
