@@ -111,16 +111,16 @@ try: #if not connected to a RoboPi, it can still run
 
     motor_speed = 500
 
-    max_error = 3 #max distance arm can be away from intended point (multiply by sqrt(3) to get max distance away)
+    max_error = 5 #max distance arm can be away from intended point (multiply by sqrt(3) to get max distance away)
 
     shoulder_pul = 1 #shoulder pulse pin
     shoulder_dir = 2 #shoulder direction pin
     elbow_pul = 3 #elbow pulse pin
     elbow_dir = 4 #elbow direction pin
     swivel_continuous = 1 #pin for swivel motor
-    ppin_shoulder = 5 #pin number for shoulder potentiometer
-    ppin_elbow = 6 #pin number for elbow potentiomenter
-    ppin_swivel = 7 #pin number for swivel potentiomenter
+    ppin_shoulder = 7 #pin number for shoulder potentiometer
+    ppin_elbow = 8 #pin number for elbow potentiomenter
+    ppin_swivel = 9 #pin number for swivel potentiomenter
 
     print "shoulder_pul", shoulder_pul
     print "shoulder_dir", shoulder_dir
@@ -139,14 +139,6 @@ try: #if not connected to a RoboPi, it can still run
 except:
     print 'Motors unrunnable: unable to reach RoboPiLib_pwm'
 
-def clockwise(joint):
-    RPL.digitalWrite(joint + _dir, 1) #turn clockwise
-    RPL.pwmWrite(joing + _pul, motor_speed, motor_speed * 2)
-
-def counter_clockwise():
-    RPL.digitalWrite(joint + _dir, 0) #turn clockwise
-    RPL.pwmWrite(joing + _pul, motor_speed, motor_speed * 2)
-
 import math #to calculate all angle values
 def motor_runner(): #sends signals to all the motors based on potentiometer readings
     while quit == False:
@@ -160,9 +152,11 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
             error_s = abs(pot_shoulder - a_shoulder) #how many degrees off the intended value the arm is
             calculated_error_s = error_s * d_one
             if pot_shoulder > a_shoulder and calculated_error_s > max_error:
-                clockwise(shoulder)
+                RPL.digitalWrite(shoulder_dir, 1) #turn clockwise
+                RPL.pwmWrite(shoulder_pul, motor_speed, motor_speed * 2)
             elif pot_shoulder < a_shoulder and calculated_error_s > max_error:
-                counter_clockwise(shoulder)
+                RPL.digitalWrite(shoulder_dir, 0) #turn counterclockwise
+                RPL.pwmWrite(shoulder_pul, motor_speed, motor_speed * 2)
             elif calculated_error_s < max_error:
                 RPL.pwmWrite(shoulder_pul, 0, motor_speed * 2) #stops running while in range
 
@@ -170,11 +164,14 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
             error_e = abs(pot_elbow - a_elbow) #how many degrees off the intended value the arm is
             calculated_error_e = error_e * d_two
             if pot_elbow > a_elbow and calculated_error_e > max_error:
-                clockwise(elbow)
+                RPL.digitalWrite(elbow_dir, 1) #turn clockwise
+                RPL.pwmWrite(elbow_pul, motor_speed, motor_speed * 2)
             elif pot_elbow < a_elbow and calculated_error_e > max_error:
-                counter_clockwise(elbow)
+                RPL.digitalWrite(elbow_dir, 0) #turn counterclockwise
+                RPL.pwmWrite(elbow_pul, motor_speed, motor_speed * 2)
             elif calculated_error_e < max_error:
                 RPL.pwmWrite(elbow_pul, 0, motor_speed * 2) #stops running while in range
+
             pot_swivel = RPL.analogRead(ppin_swivel) * 29 * math.pi / 18432
             error_sw = abs(pot_swivel - a_swivel) #how many degrees off the intended value the arm is
             if pot_swivel > a_swivel and error_sw > max_error:
@@ -183,11 +180,11 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
                 RPL.servoWrite(swivel_continuous, 1000) #turn counterclockwise
             elif error_sw < max_error:
                 RPL.servoWrite(swivel_continuous, 0) #stops running while in range
-            
+
             if quit == True: #stop the motors when the code ends
                 RPL.servoWrite(swivel_continuous, 0) #stops running while in range
-                RPL.pwmWrite(elbow_pul, 0, motor_speed * 2) #stops running while in range
-                RPL.pwmWrite(shoulder_pul, 0, motor_speed * 2) #stops running while in range
+                RPL.pwmWrite(elbow_pul, 0, 10000) #stops running while in range
+                RPL.pwmWrite(shoulder_pul, 0, 10000) #stops running while in range
 
         except: #to show the values of the motor arm
             import time
