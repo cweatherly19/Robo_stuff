@@ -16,8 +16,9 @@ except: #if running on microsoft
 while quit == False:
     if microsoft == True:
         key = msvcrt.getch() #format the keys into readable characters
-    if apple == True:
+    elif apple == True:
         key = sys.stdin.read(1) #reads one character of input without requiring a return command
+  
     for i in range(0, 1): #only records one step
         Reconing_list.insert(i, key.upper())
         if '1' in Reconing_list and quit == False:
