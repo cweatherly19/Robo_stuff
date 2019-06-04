@@ -139,12 +139,20 @@ try: #if not connected to a RoboPi, it can still run
 except:
     print 'Motors unrunnable: unable to reach RoboPiLib_pwm'
 
+def clockwise(joint):
+    RPL.digitalWrite(joint + _dir, 1) #turn clockwise
+    RPL.pwmWrite(joing + _pul, motor_speed, motor_speed * 2)
+
+def counter_clockwise():
+    RPL.digitalWrite(joint + _dir, 0) #turn clockwise
+    RPL.pwmWrite(joing + _pul, motor_speed, motor_speed * 2)
+
 import math #to calculate all angle values
 def motor_runner(): #sends signals to all the motors based on potentiometer readings
     while quit == False:
         reach_length = (x ** 2 + y ** 2 + z ** 2) ** 0.5
-        a_elbow = math.acos(round(((d_one ** 2 + d_two ** 2 - reach_length ** 2) / (2 * d_one * d_two)), 4))
-        a_shoulder = math.asin(round((d_two * math.sin(a_elbow) / reach_length), 2)) + math.asin(round((y / reach_length), 4))
+        a_elbow = math.acos(round(((d_one ** 2 + d_two ** 2 - reach_length ** 2) / (2 * d_one * d_two)), 2))
+        a_shoulder = math.asin(round((d_two * math.sin(a_elbow) / reach_length), 2)) + math.asin(round((y / reach_length), 2))
         a_swivel = math.atan2(round(x, 2), round(z, 2))
 
         try:
@@ -152,11 +160,9 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
             error_s = abs(pot_shoulder - a_shoulder) #how many degrees off the intended value the arm is
             calculated_error_s = error_s * d_one
             if pot_shoulder > a_shoulder and calculated_error_s > max_error:
-                RPL.digitalWrite(shoulder_dir, 0) #turn clockwise
-                RPL.pwmWrite(shoulder_pul, motor_speed, motor_speed * 2)
+                clockwise(shoulder)
             elif pot_shoulder < a_shoulder and calculated_error_s > max_error:
-                RPL.digitalWrite(shoulder_dir, 1) #turn counterclockwise
-                RPL.pwmWrite(shoulder_pul, motor_speed, motor_speed * 2)
+                counter_clockwise(shoulder)
             elif calculated_error_s < max_error:
                 RPL.pwmWrite(shoulder_pul, 0, motor_speed * 2) #stops running while in range
 
@@ -164,14 +170,11 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
             error_e = abs(pot_elbow - a_elbow) #how many degrees off the intended value the arm is
             calculated_error_e = error_e * d_two
             if pot_elbow > a_elbow and calculated_error_e > max_error:
-                RPL.digitalWrite(elbow_dir, 1) #turn clockwise
-                RPL.pwmWrite(elbow_pul, motor_speed, motor_speed * 2)
+                clockwise(elbow)
             elif pot_elbow < a_elbow and calculated_error_e > max_error:
-                RPL.digitalWrite(elbow_dir, 0) #turn counterclockwise
-                RPL.pwmWrite(elbow_pul, motor_speed, motor_speed * 2)
+                counter_clockwise(elbow)
             elif calculated_error_e < max_error:
                 RPL.pwmWrite(elbow_pul, 0, motor_speed * 2) #stops running while in range
-
             pot_swivel = RPL.analogRead(ppin_swivel) * 29 * math.pi / 18432
             error_sw = abs(pot_swivel - a_swivel) #how many degrees off the intended value the arm is
             if pot_swivel > a_swivel and error_sw > max_error:
