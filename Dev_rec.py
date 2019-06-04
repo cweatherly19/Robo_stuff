@@ -1,4 +1,4 @@
-Reconing_list = [] #defining a list to use later
+Reckoning_list = [] #defining a list to use later
 apple = microsoft = quit = False #set all variables to not read until called
 print "Input your list, then hit '1':"
 
@@ -18,13 +18,13 @@ while quit == False:
         key = msvcrt.getch() #format the keys into readable characters
     elif apple == True:
         key = sys.stdin.read(1) #reads one character of input without requiring a return command
-  
+
     for i in range(0, 1): #only records one step
-        Reconing_list.insert(i, key.upper())
-        if '1' in Reconing_list and quit == False:
+        Reckoning_list.insert(i, key.upper())
+        if '1' in Reckoning_list and quit == False:
             if apple == True:
                 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) #resets the console settings
-            Reconing_list.remove('1')
+            Reckoning_list.remove('1')
             quit = True
 
 print 'Display list forward or in reverse? [F, R]'
@@ -35,9 +35,9 @@ while True:
         key = sys.stdin.read(1) #reads one character of input without requiring a return command
     if key.upper() == 'F':
         print 'Forward:'
-        print Reconing_list[::-1]
+        print Reckoning_list[::-1]
         break
     if key.upper() == 'R':
         print 'Reverse:'
-        print Reconing_list[:]
+        print Reckoning_list[:]
         break
