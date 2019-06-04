@@ -5,4 +5,7 @@ motor_pin = 8
 
 while True:
   pot_value = RPL.analogRead(motor_pin)
-  print pot_value
+  try:
+    print RPL.digitalRead(motor_pin)
+  except:
+    print pot_value
