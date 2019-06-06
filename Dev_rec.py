@@ -1,7 +1,7 @@
 Reckoning_list = [] #defining a list to use later
 Inverse_list = []
 apple = microsoft = quit = False #set all variables to not read until called
-print "Input your list, then hit '1':"
+print "Input your list using the [W, A, S, D, Q, E, Z, X] keys, then hit '1':"
 
 try: #if running on apple
     import sys, tty, termios #imports for no return command
@@ -26,8 +26,6 @@ while quit == False:
 
     for i in range(0, 1): #only records one step
         Reckoning_list.insert(i, key.upper())
-        if '1' in Reckoning_list and quit == False:
-            Reckoning_list.remove('1')
 
 #############################################################################################
 ######### Create the inverse list
@@ -41,6 +39,17 @@ while quit == False:
         Inverse_list.insert(i, 'D')
     if ('D' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'A')
+    if ('Q' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'E')
+    if ('E' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'Q')
+    if ('Z' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'X')
+    if ('X' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'Z')
+
+    if (Reckoning_list[i] in ['W', 'A', 'S', 'D', 'Q', 'E', 'Z', 'X']) == False: #any unprogrammed inputs are deleted
+        del Reckoning_list[i]
 
 ##############################################################################################
 
@@ -49,7 +58,8 @@ while quit == False:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) #resets the console settings
         quit = True
 
-print Reckoning_list
-
-del Inverse_list[0] #the first term coppies twice, so you remove one of them
-print Inverse_list
+if len(Inverse_list) > 0:
+    print Reckoning_list
+    print Inverse_list
+else:
+    print 'No valid list input'
