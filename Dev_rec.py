@@ -1,4 +1,5 @@
 Reckoning_list = [] #defining a list to use later
+Inverse_list = []
 apple = microsoft = quit = False #set all variables to not read until called
 print "Input your list, then hit '1':"
 
@@ -11,7 +12,7 @@ try: #if running on apple
 
 except: #if running on microsoft
     import msvcrt #microsoft file for key input
-    microsoft = True #computer typeprint "Input your list, then hit '1' to replay your list:"
+    microsoft = True #computer typeprint
 
 while quit == False:
     if microsoft == True:
@@ -19,25 +20,36 @@ while quit == False:
     elif apple == True:
         key = sys.stdin.read(1) #reads one character of input without requiring a return command
 
+#############################################################################################
+######### Create the initial input list
+#############################################################################################
+
     for i in range(0, 1): #only records one step
         Reckoning_list.insert(i, key.upper())
         if '1' in Reckoning_list and quit == False:
-            if apple == True:
-                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) #resets the console settings
             Reckoning_list.remove('1')
-            quit = True
 
-print 'Display list forward or in reverse? [F, R]'
-while True:
-    if microsoft == True:
-        key = msvcrt.getch() #format the keys into readable characters
-    if apple == True:
-        key = sys.stdin.read(1) #reads one character of input without requiring a return command
-    if key.upper() == 'F':
-        print 'Forward:'
-        print Reckoning_list[::-1]
-        break
-    if key.upper() == 'R':
-        print 'Reverse:'
-        print Reckoning_list[:]
-        break
+#############################################################################################
+######### Create the inverse list
+#############################################################################################
+
+    if ('W' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'S')
+    if ('S' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'W')
+    if ('A' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'D')
+    if ('D' in Reckoning_list[i]) == True:
+        Inverse_list.insert(i, 'A')
+
+##############################################################################################
+
+    if key == '1': #quit when the '1' key is pressed
+        if apple == True:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) #resets the console settings
+        quit = True
+
+print Reckoning_list
+
+del Inverse_list[0] #the first term coppies twice, so you remove one of them
+print Inverse_list
