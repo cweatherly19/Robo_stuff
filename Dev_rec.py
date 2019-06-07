@@ -31,21 +31,29 @@ while quit == False:
 ######### Create the inverse list
 #############################################################################################
 
-    if ('W' in Reckoning_list[i]) == True:
+    if key.upper() == 'A':
+    #if ('W' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'S')
-    if ('S' in Reckoning_list[i]) == True:
+    if key.upper() == 'S':
+    #if ('S' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'W')
-    if ('A' in Reckoning_list[i]) == True:
+    if key.upper() == 'A':
+    #if ('A' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'D')
-    if ('D' in Reckoning_list[i]) == True:
+    if key.upper() == 'D':
+    #if ('D' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'A')
-    if ('Q' in Reckoning_list[i]) == True:
+    if key.upper() == 'Q':
+    #if ('Q' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'E')
-    if ('E' in Reckoning_list[i]) == True:
+    if key.upper() == 'E':
+    #if ('E' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'Q')
-    if ('Z' in Reckoning_list[i]) == True:
+    if key.upper() == 'Z':
+    #if ('Z' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'X')
-    if ('X' in Reckoning_list[i]) == True:
+    if key.upper() == 'X':
+    #if ('X' in Reckoning_list[i]) == True:
         Inverse_list.insert(i, 'Z')
 
     if (Reckoning_list[i] in ['W', 'A', 'S', 'D', 'Q', 'E', 'Z', 'X']) == False: #any unprogrammed inputs are deleted
