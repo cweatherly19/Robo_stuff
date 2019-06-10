@@ -111,7 +111,7 @@ try: #if not connected to a RoboPi, it can still run
 
     motor_speed = 800
 
-    max_error = 5 #max distance arm can be away from intended point (multiply by sqrt(3) to get max distance away)
+    max_error = 3 #max distance arm can be away from intended point (multiply by sqrt(3) to get max distance away)
 
     shoulder_pul = 1 #shoulder pulse pin
     shoulder_dir = 2 #shoulder direction pin
