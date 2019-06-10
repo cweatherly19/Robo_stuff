@@ -109,7 +109,7 @@ try: #if not connected to a RoboPi, it can still run
     import RoboPiLib_pwm as RPL #to pull all files needed to run the motors
     RPL.RoboPiInit("/dev/ttyAMA0", 115200) #connect to RoboPi
 
-    motor_speed = 800
+    motor_speed = 200
 
     max_error = 3 #max distance arm can be away from intended point (multiply by sqrt(3) to get max distance away)
 
