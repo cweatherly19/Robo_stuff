@@ -177,17 +177,18 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
             #move swivel motor
             pot_swivel = RPL.analogRead(ppin_swivel) * 29 * math.pi / 18432
             error_sw = abs(pot_swivel - a_swivel) #how many degrees off the intended value the arm is
-            if pot_swivel > a_swivel and error_sw > max_error:
-                RPL.servoWrite(swivel_continuous, 2000) #turn clockwise
-            elif pot_swivel < a_swivel and error_sw > max_error:
-                RPL.servoWrite(swivel_continuous, 1000) #turn counterclockwise
-            elif error_sw < max_error:
+            if error_sw > max_error:
+                if pot_swivel > a_swivel:
+                    RPL.servoWrite(swivel_continuous, 2000) #turn clockwise
+                else:
+                    RPL.servoWrite(swivel_continuous, 1000) #turn counterclockwise
+            else:
                 RPL.servoWrite(swivel_continuous, 0) #stops running while in range
 
             if quit == True: #stop the motors when the code ends
                 RPL.servoWrite(swivel_continuous, 0) #stops running while in range
-                RPL.pwmWrite(elbow_pul, 0, 10000) #stops running while in range
-                RPL.pwmWrite(shoulder_pul, 0, 10000) #stops running while in range
+                RPL.pwmWrite(elbow_pul, 0, motor_speed * 2) #stops running while in range
+                RPL.pwmWrite(shoulder_pul, 0, motor_speed * 2) #stops running while in range
 
         except: #to show the values of the motor arm
             import time
