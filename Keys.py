@@ -115,8 +115,8 @@ try: #if not connected to a RoboPi, it can still run
 
     shoulder_pul = 1 #shoulder pulse pin
     shoulder_dir = 2 #shoulder direction pin
-    elbow_pul = 3 #elbow pulse pin
-    elbow_dir = 4 #elbow direction pin
+    elbow_pul = 5 #elbow pulse pin
+    elbow_dir = 6 #elbow direction pin
     swivel_continuous = 1 #pin for swivel motor
     ppin_shoulder = 5 #pin number for shoulder potentiometer
     ppin_elbow = 6 #pin number for elbow potentiomenter
