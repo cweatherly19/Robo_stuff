@@ -14,8 +14,9 @@ print "Shoulder pin:", pot_pin_shoulder
 time.sleep(5)
 
 while True:
-  pot_value = RPL.analogRead(pot_pin)
-  print(pot_value_shoulder * 270 / shoulder_range)
-  time.sleep(0.05)
+  pot_value_elbow = RPL.analogRead(pot_pin_elbow)
+  pot_value_shoulder = RPL.analogRead(pot_pin_shoulder)
   print(pot_value_elbow * 270 / elbow_range)
+  time.sleep(0.05)
+  print(pot_value_shoulder * 270 / shoulder_range)
   time.sleep(0.05)
