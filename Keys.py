@@ -115,7 +115,7 @@ try: #if not connected to a RoboPi, it can still run
     
     shoulder_range = 840 #range of read value for the shoulder POT
     elbow_range = 775 #range of read value for the elbow POT
-    #swivel_range = (NUMBER HERE: NEED TO FIND POT FOR THIS) #range of read value for the swivel POT
+    swivel_range = 800 #(NUMBER HERE: NEED TO FIND POT AND ITS RANGE FOR THIS) #range of read value for the swivel POT
 
     shoulder_pul = 1 #shoulder pulse pin
     shoulder_dir = 2 #shoulder direction pin
