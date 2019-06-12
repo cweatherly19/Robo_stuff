@@ -150,7 +150,7 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
         try:
             shoulder_range = 840 #range of read value for the shoulder POT
             elbow_range = 775 #range of read value for the elbow POT
-            #swivel_range = (NUMBER HERE—NEED TO FIND POT FOR THIS) #range of read value for the swivel POT
+            #swivel_range = (NUMBER HERE: NEED TO FIND POT FOR THIS) #range of read value for the swivel POT
             
             #move shoulder motor
             pot_shoulder = RPL.analogRead(ppin_shoulder) * 3 * math.pi / (2 * shoulder_range) - math.pi / 4
