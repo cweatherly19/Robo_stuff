@@ -148,8 +148,12 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
         a_swivel = math.atan2(round(x, 2), round(z, 2))
 
         try:
+            shoulder_range = 840 #range of read value for the shoulder POT
+            elbow_range = 775 #range of read value for the elbow POT
+            #swivel_range = (NUMBER HERE—NEED TO FIND POT FOR THIS) #range of read value for the swivel POT
+            
             #move shoulder motor
-            pot_shoulder = RPL.analogRead(ppin_shoulder) * 29 * math.pi / 18432
+            pot_shoulder = RPL.analogRead(ppin_shoulder) * 3 * math.pi / (2 * shoulder_range) - math.pi / 4
             error_s = abs(pot_shoulder - a_shoulder) #how many degrees off the intended value the arm is
             calculated_error_s = error_s * d_two
             if calculated_error_s > max_error:
@@ -162,7 +166,7 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
                 RPL.pwmWrite(shoulder_pul, 0, motor_speed * 2) #stops running while in range
            
             #move elbow motor
-            pot_elbow = RPL.analogRead(ppin_elbow) * 29 * math.pi / 18432
+            pot_elbow = RPL.analogRead(ppin_elbow) * 3 * math.pi / (2 * elbow_range) - math.pi / 4
             error_e = abs(pot_elbow - a_elbow) #how many degrees off the intended value the arm is
             calculated_error_e = error_e * d_two
             if calculated_error_e > max_error:
@@ -175,7 +179,7 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
                 RPL.pwmWrite(elbow_pul, 0, motor_speed * 2) #stops running while in range
           
             #move swivel motor
-            pot_swivel = RPL.analogRead(ppin_swivel) * 29 * math.pi / 18432
+            pot_swivel = RPL.analogRead(ppin_swivel) * 3 * math.pi / (2 * swivel_range) - math.pi / 4
             error_sw = abs(pot_swivel - a_swivel) #how many degrees off the intended value the arm is
             if error_sw > max_error:
                 if pot_swivel > a_swivel:
