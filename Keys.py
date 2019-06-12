@@ -171,9 +171,9 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
             calculated_error_e = error_e * d_two
             if calculated_error_e > max_error:
                 if pot_elbow > a_elbow:
-                    RPL.digitalWrite(elbow_dir, 1) #turn clockwise
+                    RPL.digitalWrite(elbow_dir, 0) #turn clockwise
                 else:
-                    RPL.digitalWrite(elbow_dir, 0) #turn counterclockwise
+                    RPL.digitalWrite(elbow_dir, 1) #turn counterclockwise
                 RPL.pwmWrite(elbow_pul, motor_speed, motor_speed * 2)
             else:
                 RPL.pwmWrite(elbow_pul, 0, motor_speed * 2) #stops running while in range
