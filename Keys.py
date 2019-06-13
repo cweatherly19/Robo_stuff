@@ -111,7 +111,9 @@ try: #if not connected to a RoboPi, it can still run
 
     motor_speed = 200
 
-    max_error = 3 #max distance arm can be away from intended point (multiply by sqrt(3) to get max distance away)
+    max_error = 3 #max distance arm can be away from intended point
+    
+    max_error = 3 / sqrt(3) #to convert the error to soley the unit of measurement
     
     shoulder_range = 840 #range of read value for the shoulder POT
     elbow_range = 775 #range of read value for the elbow POT
