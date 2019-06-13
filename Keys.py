@@ -112,7 +112,9 @@ try: #if not connected to a RoboPi, it can still run
     elbow_motor_speed = 200
     shoulder_motor_speed = 500
 
-    max_error = 3 #max distance arm can be away from intended point
+    distance_of_error = 3 #max distance arm can be away from intended point
+    
+    max_error = distance_of_error / sqrt(3) #to convert the error to the intiger unit of measurement
     
     shoulder_range = 840 #range of read value for the shoulder POT
     elbow_range = 775 #range of read value for the elbow POT
@@ -158,8 +160,6 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
             a_swivel = math.pi / 2 #the swivel angle when its angle doesn't matter
 
         try:
-            max_error = max_error / sqrt(3) #to convert the error to the intiger unit of measurement
-            
             #move shoulder motor
             pot_shoulder = RPL.analogRead(ppin_shoulder) * 3 * math.pi / (2 * shoulder_range) - math.pi / 4
             error_s = abs(pot_shoulder - a_shoulder) #how many degrees off the intended value the arm is
