@@ -105,9 +105,10 @@ def key_reader(): #reading input key functions
                 z_up()
 
 quit = False #for breaking the motor loop with the '1' key command
+
+import math #to calculate all angle values and error
 try: #if not connected to a RoboPi, it can still run
     import RoboPiLib_pwm as RPL #to pull all files needed to run the motors
-    import math #to calculate all angle values and error
     RPL.RoboPiInit("/dev/ttyAMA0", 115200) #connect to RoboPi
 
     elbow_motor_speed = 200
