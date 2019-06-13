@@ -107,6 +107,7 @@ def key_reader(): #reading input key functions
 quit = False #for breaking the motor loop with the '1' key command
 try: #if not connected to a RoboPi, it can still run
     import RoboPiLib_pwm as RPL #to pull all files needed to run the motors
+    import math #to calculate all angle values and error
     RPL.RoboPiInit("/dev/ttyAMA0", 115200) #connect to RoboPi
 
     elbow_motor_speed = 200
@@ -146,7 +147,6 @@ try: #if not connected to a RoboPi, it can still run
 except:
     print 'Motors unrunnable: unable to reach RoboPiLib_pwm'
 
-import math #to calculate all angle values
 def motor_runner(): #sends signals to all the motors based on potentiometer readings
     while quit == False:
         reach_length = math.sqrt(x ** 2 + y ** 2 + z ** 2) #the momentary length of the arm
