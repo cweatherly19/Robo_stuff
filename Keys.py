@@ -114,7 +114,7 @@ try: #if not connected to a RoboPi, it can still run
 
     distance_of_error = 3 #max distance arm can be away from intended point
     
-    max_error = distance_of_error / sqrt(3) #to convert the error to the intiger unit of measurement
+    max_error = distance_of_error / math.sqrt(3) #to convert the error to the intiger unit of measurement
     
     shoulder_range = 840 #range of read value for the shoulder POT
     elbow_range = 775 #range of read value for the elbow POT
