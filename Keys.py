@@ -146,10 +146,15 @@ except:
 import math #to calculate all angle values
 def motor_runner(): #sends signals to all the motors based on potentiometer readings
     while quit == False:
-        reach_length = (x ** 2 + y ** 2 + z ** 2) ** 0.5
-        a_elbow = abs(math.acos(round(((d_one ** 2 + d_two ** 2 - reach_length ** 2) / (2 * d_one * d_two)), 2)) - math.pi)
-        a_shoulder = math.asin(round((d_two * math.sin(a_elbow) / reach_length), 2)) + math.asin(round((y / reach_length), 2))
-        a_swivel = math.atan2(round(x, 2), round(z, 2))
+        reach_length = math.sqrt(x ** 2 + y ** 2 + z ** 2) #the momentary length of the arm
+
+        elbow_value = math.acos((d_one ** 2 + d_two ** 2 - reach_length ** 2) / (2 * d_one * d_two)) #the actual value of the elbow angle
+        a_elbow = round(abs(elbow_value - math.pi), 4) #the converted angle of the elbow
+        a_shoulder = round(math.asin(d_two * math.sin(elbow_value) / reach_length) + math.asin(y / reach_length), 4) #the shoulder angle
+        try:
+            a_swivel = round(math.asin(z / math.sqrt(x ** 2 + z ** 2)) + math.pi / 2, 4) #the swivel angle
+        except:
+            a_swivel = math.pi / 2 #the swivel angle when its angle doesn't matter
 
         try:         
             #move shoulder motor
