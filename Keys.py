@@ -109,11 +109,10 @@ try: #if not connected to a RoboPi, it can still run
     import RoboPiLib_pwm as RPL #to pull all files needed to run the motors
     RPL.RoboPiInit("/dev/ttyAMA0", 115200) #connect to RoboPi
 
-    motor_speed = 200
+    elbow_motor_speed = 200
+    shoulder_motor_speed = 500
 
     max_error = 3 #max distance arm can be away from intended point
-    
-    max_error = max_error / sqrt(3) #to convert the error to soley the unit of measurement
     
     shoulder_range = 840 #range of read value for the shoulder POT
     elbow_range = 775 #range of read value for the elbow POT
@@ -158,7 +157,9 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
         except:
             a_swivel = math.pi / 2 #the swivel angle when its angle doesn't matter
 
-        try:         
+        try:
+            max_error = max_error / sqrt(3) #to convert the error to the intiger unit of measurement
+            
             #move shoulder motor
             pot_shoulder = RPL.analogRead(ppin_shoulder) * 3 * math.pi / (2 * shoulder_range) - math.pi / 4
             error_s = abs(pot_shoulder - a_shoulder) #how many degrees off the intended value the arm is
@@ -168,9 +169,9 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
                     RPL.digitalWrite(shoulder_dir, 0) #turn clockwise
                 else:
                     RPL.digitalWrite(shoulder_dir, 1) #turn counterclockwise
-                RPL.pwmWrite(shoulder_pul, motor_speed, motor_speed * 2)
+                RPL.pwmWrite(shoulder_pul, shoulder_motor_speed, shoulder_motor_speed * 2)
             else:
-                RPL.pwmWrite(shoulder_pul, 0, motor_speed * 2) #stops running while in range
+                RPL.pwmWrite(shoulder_pul, 0, shoulder_motor_speed * 2) #stops running while in range
            
             #move elbow motor
             pot_elbow = RPL.analogRead(ppin_elbow) * 3 * math.pi / (2 * elbow_range) - math.pi / 4
@@ -181,9 +182,9 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
                     RPL.digitalWrite(elbow_dir, 0) #turn clockwise
                 else:
                     RPL.digitalWrite(elbow_dir, 1) #turn counterclockwise
-                RPL.pwmWrite(elbow_pul, motor_speed, motor_speed * 2)
+                RPL.pwmWrite(elbow_pul, elbow_motor_speed, elbow_motor_speed * 2)
             else:
-                RPL.pwmWrite(elbow_pul, 0, motor_speed * 2) #stops running while in range
+                RPL.pwmWrite(elbow_pul, 0, elbow_motor_speed * 2) #stops running while in range
           
             #move swivel motor
             pot_swivel = RPL.analogRead(ppin_swivel) * 3 * math.pi / (2 * swivel_range) - math.pi / 4
