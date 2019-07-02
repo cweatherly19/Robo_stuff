@@ -4,8 +4,8 @@ d_two = 48.0 #distance from elbow to wrist
 x = 0.0 #starting x value
 y = 110.0 #starting y value
 z = 0.0 #starting z value
-speed = 1 #starting speed (whole number between 1 and 4)
 
+speed = 1 #starting speed (whole number between 1 and 4)
 microsoft = apple = False #determine which opperating system is being used
 
 print "Press '1' to end code"
@@ -45,17 +45,12 @@ def speed_down(): #decrease speed value
 
 try: #if running on apple
     import sys, tty, termios #imports for no return command
-
     fd = sys.stdin.fileno() #unix file descriptor to define the file type
     old_settings = termios.tcgetattr(fd) #records the existing console settings
-
     tty.setcbreak(sys.stdin) #sets the style of input
-
     apple = True #computer type
-
 except: #if running on microsoft
     import msvcrt #microsoft file for key input
-
     microsoft = True #computer type
 
 def key_reader(): #reading input key functions
@@ -64,14 +59,12 @@ def key_reader(): #reading input key functions
             key = sys.stdin.read(1) #reads one character of input without requiring a return command
         elif microsoft == True:
             key = msvcrt.getch() #format the keys into readable characters
-
         if key == '1': #pressing the '1' key kills the process
             if apple == True:
                 termios.tcsetattr(fd, termios.TCSADRAIN, old_settings) #resets the console settings
             global quit #to quit out of the motor loop
             quit = True
             break
-
         elif key.upper() == 'X' and speed < 4: #increase speed
             speed_up()
         elif key.upper() == 'Z' and speed > 1: #decrease speed
@@ -115,9 +108,9 @@ try: #if not connected to a RoboPi, it can still run
     shoulder_motor_speed = 500
 
     distance_of_error = 3 #max distance arm can be away from intended point
-    
+
     max_error = distance_of_error / math.sqrt(3) #to convert the error to the intiger unit of measurement
-    
+
     shoulder_range = 840 #range of read value for the shoulder POT
     elbow_range = 775 #range of read value for the elbow POT
     swivel_range = 800 #(NUMBER HERE: NEED TO FIND POT AND ITS RANGE FOR THIS) #range of read value for the swivel POT
@@ -139,7 +132,6 @@ try: #if not connected to a RoboPi, it can still run
     print "ppin_shoulder", ppin_shoulder
     print "ppin_elbow", ppin_elbow
     print "ppin_swivel", ppin_swivel
-
     RPL.pinMode(shoulder_pul, RPL.PWM) #set shoulder_pul pin as a pulse-width modulation output
     RPL.pinMode(shoulder_dir, RPL.OUTPUT) #set shoulder_dir pin to an output and write 1 to it
     RPL.pinMode(elbow_pul, RPL.PWM) #set elbow_pul pin as a pulse-width modulation output
@@ -152,16 +144,14 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
     while quit == False:
         reach_length = math.sqrt(x ** 2 + y ** 2 + z ** 2) #the momentary length of the arm
 
-        elbow_value = math.acos((d_one ** 2 + d_two ** 2 - reach_length ** 2) / (2 * d_one * d_two)) #the actual value of the elbow angle
-        a_elbow = round(abs(elbow_value - math.pi), 4) #the converted angle of the elbow
-        a_shoulder = round(math.asin(d_two * math.sin(elbow_value) / reach_length) + math.acos(math.sqrt(x ** 2 + z ** 2) / reach_length), 4) #the shoulder angle
+        a_elbow = round(abs(math.acos((d_one ** 2 + d_two ** 2 - reach_length ** 2) / (2 * d_one * d_two)) - math.pi), 4) #the elbow angle
+        a_shoulder = round(math.acos((reach_length ** 2 + d_one ** 2 - d_two ** 2) / (2 * d_one * reach_length)) + math.acos(math.sqrt(x ** 2 + z ** 2) / reach_length), 4) #the shoulder angle
         try:
-            a_swivel = round(math.asin(z / math.sqrt(x ** 2 + z ** 2)) + math.pi / 2, 4) #the swivel angle
+            a_swivel = round(math.atan(z / x) + math.pi / 2, 4) #the swivel angle
         except:
             a_swivel = math.pi / 2 #the swivel angle when its angle doesn't matter
 
-        try:
-            #move shoulder motor
+        try: #move shoulder motor
             pot_shoulder = RPL.analogRead(ppin_shoulder) * 3 * math.pi / (2 * shoulder_range) - math.pi / 4
             error_s = abs(pot_shoulder - a_shoulder) #how many degrees off the intended value the arm is
             calculated_error_s = error_s * d_two
@@ -170,10 +160,10 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
                     RPL.digitalWrite(shoulder_dir, 0) #turn clockwise
                 else:
                     RPL.digitalWrite(shoulder_dir, 1) #turn counterclockwise
-                RPL.pwmWrite(shoulder_pul, shoulder_motor_speed, shoulder_motor_speed * 2)
+                    RPL.pwmWrite(shoulder_pul, shoulder_motor_speed, shoulder_motor_speed * 2)
             else:
                 RPL.pwmWrite(shoulder_pul, 0, shoulder_motor_speed * 2) #stops running while in range
-           
+
             #move elbow motor
             pot_elbow = RPL.analogRead(ppin_elbow) * 3 * math.pi / (2 * elbow_range) - math.pi / 4
             error_e = abs(pot_elbow - a_elbow) #how many degrees off the intended value the arm is
@@ -183,10 +173,10 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
                     RPL.digitalWrite(elbow_dir, 0) #turn clockwise
                 else:
                     RPL.digitalWrite(elbow_dir, 1) #turn counterclockwise
-                RPL.pwmWrite(elbow_pul, elbow_motor_speed, elbow_motor_speed * 2)
+                    RPL.pwmWrite(elbow_pul, elbow_motor_speed, elbow_motor_speed * 2)
             else:
                 RPL.pwmWrite(elbow_pul, 0, elbow_motor_speed * 2) #stops running while in range
-          
+
             #move swivel motor
             pot_swivel = RPL.analogRead(ppin_swivel) * 3 * math.pi / (2 * swivel_range) - math.pi / 4
             error_sw = abs(pot_swivel - a_swivel) #how many degrees off the intended value the arm is
@@ -205,7 +195,7 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
 
         except: #to show the values of the motor arm
             from time import sleep
-            sleep(1)
+            sleep(0.5)
             print('[elbow, shoulder, swivel]:', [round(a_elbow, 4), round(a_shoulder, 4), round(a_swivel, 4)], '[Speed]:', [speed], '[x, y, z]:', [round(x, 2), round(y, 2), round(z, 2)])
 
 import threading #runs both functions simultanously
