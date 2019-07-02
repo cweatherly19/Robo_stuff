@@ -154,7 +154,7 @@ def motor_runner(): #sends signals to all the motors based on potentiometer read
 
         elbow_value = math.acos((d_one ** 2 + d_two ** 2 - reach_length ** 2) / (2 * d_one * d_two)) #the actual value of the elbow angle
         a_elbow = round(abs(elbow_value - math.pi), 4) #the converted angle of the elbow
-        a_shoulder = round(math.asin(d_two * math.sin(elbow_value) / reach_length) + math.asin(y / reach_length), 4) #the shoulder angle
+        a_shoulder = round(math.asin(d_two * math.sin(elbow_value) / reach_length) + math.acos(math.sqrt(x ** 2 + z ** 2) / reach_length), 4) #the shoulder angle
         try:
             a_swivel = round(math.asin(z / math.sqrt(x ** 2 + z ** 2)) + math.pi / 2, 4) #the swivel angle
         except:
