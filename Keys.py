@@ -1,5 +1,5 @@
-d_one = 62.0 #distance from shoulder to elbow
-d_two = 48.0 #distance from elbow to wrist
+d_one = 22.5 #distance from shoulder to elbow
+d_two = 23.0 #distance from elbow to wrist
 
 x = 0.0 #starting x value
 y = 110.0 #starting y value
