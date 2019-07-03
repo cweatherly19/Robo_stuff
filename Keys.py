@@ -2,7 +2,7 @@ d_one = 22.5 #distance from shoulder to elbow
 d_two = 23.0 #distance from elbow to wrist
 
 x = 0.0 #starting x value
-y = 110.0 #starting y value
+y = d_one + d_two #starting y value
 z = 0.0 #starting z value
 
 speed = 1 #starting speed (whole number between 1 and 4)
