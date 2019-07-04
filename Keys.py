@@ -101,8 +101,8 @@ quit = False #for breaking the motor loop with the '1' key command
 
 import math #to calculate all angle values and error
 try: #if not connected to a RoboPi, it can still run
-    import RoboPiLib_pwm as RPL #to pull all files needed to run the motors
-    RPL.RoboPiInit("/dev/ttyAMA0", 115200) #connect to RoboPi
+    from bsmLib import RPL
+    RPL.init()
 
     elbow_motor_speed = 300
     shoulder_motor_speed = 300
