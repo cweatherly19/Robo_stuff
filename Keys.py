@@ -104,8 +104,8 @@ try: #if not connected to a RoboPi, it can still run
     import RoboPiLib_pwm as RPL #to pull all files needed to run the motors
     RPL.RoboPiInit("/dev/ttyAMA0", 115200) #connect to RoboPi
 
-    elbow_motor_speed = 2000
-    shoulder_motor_speed = 2000
+    elbow_motor_speed = 300
+    shoulder_motor_speed = 300
 
     distance_of_error = 3 #max distance arm can be away from intended point
 
