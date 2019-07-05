@@ -15,21 +15,24 @@
 #######################                    #####
 ################################################
 ################################################
+
 import RoboPiLib as RPL
 import setup, time, curses
-#import time, curses
 
+#setting up the curses file
 screen = curses.initscr()
 curses.noecho()
 curses.cbreak()
 curses.halfdelay(1)
 
+#to initiate the later while loop
 key = ''
 
 #WHEEL SPEEDS
 sp1 = 1000
 sp2 = 2000
 
+#defining for stop function
 key_down = time.time()
 
 #WHEEL PINS
@@ -38,29 +41,35 @@ b = 13
 c = 14
 d = 15
 
+#arm pins
 s_pin = 1
 e_pin = 2
 w_pin = 3
 g_pin = 4
 w_turn = 5
 
+#stop all motors when code starts
 RPL.servoWrite(a, 1500)
 RPL.servoWrite(b, 1500)
 RPL.servoWrite(c, 1500)
 RPL.servoWrite(d, 1500)
 RPL.servoWrite(w_turn, 0)
 
+#for motor calabration
 fraction_shoulder = 16 / 40
 fraction_elbow = 24 / 40
-fraction_wrist = 20 / 40 #PUT THE RATION HERE
+fraction_wrist = 20 / 40
+
+#how much each step takes with the arm
 step = 1
 
+#kinimatics for the arm test
 def test(x, y): #function to test if the arm is in the range of possible motion
     d_three = (y ** 2 + x ** 2) ** 0.5
     if d_three < d_one + d_two or d_three > d_one - d_two:
         return False
 
-#Stops wheels                                                                                                                                                                    $
+#Defining all the movements                                                                                                                                                                    $
 def stopall():
     screen.addstr('')
     RPL.servoWrite(a, 1500)
@@ -126,6 +135,7 @@ def rightBackwards():
     RPL.servoWrite(d, sp2)
 
 while key != ord('f'):
+    #read keys and clear screen
     key = screen.getch()
     screen.clear()
 
@@ -228,10 +238,12 @@ while key != ord('f'):
         screen.addstr('Stopped')
         stopall()
 
+    #close out of curses without any errors
     if key == ord('f'):
         stopall()
         curses.endwin()
 
+    #doing the math for the kinimatics
     if test(x, y) != False:
         try:
             a_elbow = math.acos(round((d_one ** 2 + d_two ** 2 - y ** 2 - x ** 2) / (2 * d_one * d_two), 1))
@@ -252,6 +264,7 @@ while key != ord('f'):
             input_wrist = 0
             wrist_movement += step
 
+        #moving the motors to their positions
         RPL.servoWrite(s_pin, input_shoulder)
         RPL.servoWrite(e_pin, input_elbow) #to move the motors
         RPL.servoWrite(w_pin, input_wrist)
