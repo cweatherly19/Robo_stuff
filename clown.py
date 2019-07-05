@@ -220,17 +220,17 @@ while key != ord('f'):
 
     if key == ord('u'):
         screen.addstr('Rotate Clockwise')
-        RPL.servoWrite(w_turn, 2000)
+        RPL.servoWrite(w_turn, sp2)
         key_down = time.time()
 
     if key == ord('o');
         screen.addstr('Rotate Counterclockwise')
-        RPL.servoWrite(w_turn, 1000)
+        RPL.servoWrite(w_turn, sp1)
         key_down = time.time()
 
     if key == ord('1'):
         screen.addstr('Grasper Closed')
-        RPL.servoWrite(g_pin, 1000)
+        RPL.servoWrite(g_pin, sp1)
 
     if key == ord('2'):
         screen.addstr('Grasper Opened')
@@ -238,12 +238,12 @@ while key != ord('f'):
 
     if key == ord('3'):
         screen.addstr('Base Clockwise')
-        RPL.servoWrite(swivel_pin, 2000)
+        RPL.servoWrite(swivel_pin, sp2)
         key_down = time.time()
 
     if key == ord('4'):
         screen.addstr('Base Counterclockwise')
-        RPL.servoWrite(swivel_pin, 1000)
+        RPL.servoWrite(swivel_pin, sp1)
         key_down = time.time()
 
     if time.time() - key_down > 0.1:
