@@ -54,6 +54,7 @@ RPL.servoWrite(b, 1500)
 RPL.servoWrite(c, 1500)
 RPL.servoWrite(d, 1500)
 RPL.servoWrite(w_turn, 0)
+RPL.servoWrite(swivel_pin, 0)
 
 #for motor calabration
 fraction_shoulder = 16 / 40
@@ -77,6 +78,7 @@ def stopall():
     RPL.servoWrite(c, 1500)
     RPL.servoWrite(d, 1500)
     RPL.servoWrite(w_turn, 0)
+    RPL.servoWrite(swivel_pin, 0)
 
 def turnRight():
     screen.addstr('')
@@ -233,6 +235,16 @@ while key != ord('f'):
     if key == ord('2'):
         screen.addstr('Grasper Opened')
         RPL.servoWrite(g_pin, 1500)
+
+    if key == ord('3'):
+        screen.addstr('Base Clockwise')
+        RPL.servoWrite(swivel_pin, 2000)
+        key_down = time.time()
+
+    if key == ord('4'):
+        screen.addstr('Base Counterclockwise')
+        RPL.servoWrite(swivel_pin, 1000)
+        key_down = time.time()
 
     if time.time() - key_down > 0.1:
         screen.addstr('Stopped')
