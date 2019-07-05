@@ -53,7 +53,9 @@ while key != ord('1'):
         screen.addstr('Stopped')
         RPL.pwmWrite(elbow_pul, 0, speed * 2)
         RPL.pwmWrite(shoulder_pul, 0, speed * 2)
+        RPL.servoWrite(swivel_pin, 0)
     if key == ord('1'):
         RPL.pwmWrite(elbow_pul, 0, speed * 2)
         RPL.pwmWrite(shoulder_pul, 0, speed * 2)
+        RPL.servoWrite(swivel_pin, 0)
         curses.endwin()
