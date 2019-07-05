@@ -12,6 +12,7 @@
 ######################                      ####
 #####################         Con_Man        ###
 ###################### aka The_Weather_Man  ####
+#######################                    #####
 ################################################
 ################################################
 import RoboPiLib as RPL
@@ -37,10 +38,27 @@ b = 13
 c = 14
 d = 15
 
+s_pin = 1
+e_pin = 2
+w_pin = 3
+g_pin = 4
+w_turn = 5
+
 RPL.servoWrite(a, 1500)
 RPL.servoWrite(b, 1500)
 RPL.servoWrite(c, 1500)
 RPL.servoWrite(d, 1500)
+RPL.servoWrite(w_turn, 0)
+
+fraction_shoulder = 16 / 40
+fraction_elbow = 24 / 40
+fraction_wrist = 20 / 40 #PUT THE RATION HERE
+step = 1
+
+def test(x, y): #function to test if the arm is in the range of possible motion
+    d_three = (y ** 2 + x ** 2) ** 0.5
+    if d_three < d_one + d_two or d_three > d_one - d_two:
+        return False
 
 #Stops wheels                                                                                                                                                                    $
 def stopall():
@@ -49,6 +67,7 @@ def stopall():
     RPL.servoWrite(b, 1500)
     RPL.servoWrite(c, 1500)
     RPL.servoWrite(d, 1500)
+    RPL.servoWrite(w_turn, 0)
 
 def turnRight():
     screen.addstr('')
@@ -155,6 +174,56 @@ while key != ord('f'):
         stopall()
         key_down = time.time()
 
+    if key == ord('i'):
+        screen.addstr('Raising Arm')
+        y += step
+        if test(x, y) == False:
+            y -= step
+
+    if key == ord('k'):
+        screen.addstr('Dropping Arm')
+        y -= step
+        if test(x, y) == False:
+            y += step
+
+    if key == ord('j'):
+        screen.addstr('Retracting Arm')
+        y -= step
+        if test(x, y) == False:
+            y += step
+
+    if key == ord('l'):
+        screen.addstr('Extending Arm')
+        y += step
+        if test(x, y) == False:
+            y -= step
+
+    if key == ord('n'):
+        screen.addstr('Wrist Up')
+        wrist_movement += step / math.pi
+
+    if key == ord('m'):
+        screen.addstr('Wrist Down')
+        wrist_movement -= step / math.pi
+
+    if key == ord('u'):
+        screen.addstr('Rotate Clockwise')
+        RPL.servoWrite(w_turn, 2000)
+        key_down = time.time()
+
+    if key == ord('o');
+        screen.addstr('Rotate Counterclockwise')
+        RPL.servoWrite(w_turn, 1000)
+        key_down = time.time()
+
+    if key == ord('1'):
+        screen.addstr('Grasper Closed')
+        RPL.servoWrite(g_pin, 1000)
+
+    if key == ord('2'):
+        screen.addstr('Grasper Opened')
+        RPL.servoWrite(g_pin, 1500)
+
     if time.time() - key_down > 0.1:
         screen.addstr('Stopped')
         stopall()
@@ -163,6 +232,29 @@ while key != ord('f'):
         stopall()
         curses.endwin()
 
+    if test(x, y) != False:
+        try:
+            a_elbow = math.acos(round((d_one ** 2 + d_two ** 2 - y ** 2 - x ** 2) / (2 * d_one * d_two), 1))
+            a_shoulder = math.asin(round((d_two * math.sin(a_elbow) / (y ** 2 + x ** 2) ** 0.5), 1)) + math.atan2(y, x) #calculate all angle values
+        except:
+            a_elbow = 0; a_shoulder = math.pi
+
+        a_wrist = math.arcsin(round(y * sin(y / (x ** 2 + y ** 2) ** 0.5) / x, 1)) + wrist_movement
+
+        input_elbow = int(fraction_elbow * a_elbow * 2000 / math.pi + 400)
+        input_shoulder = int(fraction_shoulder * a_shoulder * 2000 / math.pi + 400) #angle and motor value calculations
+        input_wrist = int(fraction_wrist * a_wrist * 2000 / math.pi + 400)
+
+        if input_wrist > 3000:
+            input_wrist = 3000
+            wrist_movement -= step
+        if input_wrist < 0:
+            input_wrist = 0
+            wrist_movement += step
+
+        RPL.servoWrite(s_pin, input_shoulder)
+        RPL.servoWrite(e_pin, input_elbow) #to move the motors
+        RPL.servoWrite(w_pin, input_wrist)
 
 ################################################
 ################################################
@@ -178,5 +270,6 @@ while key != ord('f'):
 #######################                     ####
 #####################        Con_Man         ###
 ###################### aka The_Weather_Man  ####
+#######################                    #####
 ################################################
 ################################################
