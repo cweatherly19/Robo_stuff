@@ -8,6 +8,7 @@ curses.halfdelay(1)
 
 elbow_dir = 6
 elbow_pul = 5
+swivel_pin = 1
 speed = 500
 key = ''
 key_hit = time.time()
@@ -17,7 +18,7 @@ RPL.pinMode(elbow_dir, RPL.OUTPUT)
 RPL.pinModw(shoulder_pul, RPL.PWM)
 RPL.pinMode(shoulder_dir, RPL.OUTPUT)
 
-while key != ord('q'):
+while key != ord('1'):
     key = screen.getch()
     screen.clear()
     if key == ord('w'):
@@ -40,11 +41,19 @@ while key != ord('q'):
         RPL.digitalWrite(shoulder_dir, 1)
         RPL.pwmWrite(shoulder_pul, speed, speed * 2)
         key_hit = time.time()
+    if key == ord('q'):
+        screen.addstr('Moving swivel clockwise')
+        RPL.servoWrite(swivel_pin, 2000)
+        key_hit = True
+    if key == ord('e'):
+        screen.addstr('Moving swivel counterclockwise')
+        RPL.servoWrite(swivel_pin, 1000)
+        key_hit = True
     if time.time() - key_hit > 0.5:
         screen.addstr('Stopped')
         RPL.pwmWrite(elbow_pul, 0, speed * 2)
         RPL.pwmWrite(shoulder_pul, 0, speed * 2)
-    if key == ord('q'):
+    if key == ord('1'):
         RPL.pwmWrite(elbow_pul, 0, speed * 2)
         RPL.pwmWrite(shoulder_pul, 0, speed * 2)
         curses.endwin()
