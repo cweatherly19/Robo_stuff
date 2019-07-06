@@ -34,6 +34,7 @@ sp2 = 2000
 
 #defining for stop function
 key_down = time.time()
+wrist_movement = 0
 
 #WHEEL PINS
 a = 12
@@ -267,7 +268,7 @@ while key != ord('f'):
         except:
             a_elbow = 0; a_shoulder = math.pi
 
-        a_wrist = math.arcsin(round(y * sin(y / (x ** 2 + y ** 2) ** 0.5) / x, 1)) + wrist_movement
+        a_wrist = math.arcsin(round(x * sin(y / (x ** 2 + y ** 2) ** 0.5) / y, 1)) + wrist_movement
 
         input_elbow = int(fraction_elbow * a_elbow * 2000 / math.pi + 400)
         input_shoulder = int(fraction_shoulder * a_shoulder * 2000 / math.pi + 400) #angle and motor value calculations
