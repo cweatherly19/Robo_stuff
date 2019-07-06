@@ -43,8 +43,10 @@ c = 14
 d = 15
 
 #length of arm segments
-d_one = 4 #from shoulder to elbow
-d_two = 3 #from elbow to wrist
+d_one = 40 #from shoulder to elbow
+d_two = 30 #from elbow to wrist
+x = 20
+y = 20
 
 #arm pins
 s_pin = 1
